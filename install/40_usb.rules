@@ -1,1 +1,0 @@
-DRIVER=="usb", SUBSYSTEMS=="usb", ATTR{idVendor}=="04b4",  ATTR{idProduct}=="1004", GROUP="plugdev", MODE="0666"

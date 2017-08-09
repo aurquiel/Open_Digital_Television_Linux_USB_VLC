@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo "Para la instalación TDA LINUX debe ser super usuario."	#Mostrar mensaje
+
+#echo "Instalacion de dependecias necesarias...\n"												#Mostrar mensaje
+sudo dnf install gcc-c++ gtkmm30-devel gstreamermm-devel cluttermm-devel webkitgtk3-devel libgdamm-devel
+sudo rpm -ivh *.rpm
+
+echo "Creando carpeta en la ruta de instalacion...\n"									#Mostrar mensaje
+
+mkdir -p /opt/TDA_LINUX  												#Crea la carpeta TDA_LINUX
+
+echo "Compilando...\n"													#Mostrar mensaje
+
+g++ main.cpp -std=c++11 -lusb-1.0 -lvlc -pthread -rdynamic -lX11 -s `pkg-config --cflags gtk+-3.0` `pkg-config --libs gtk+-3.0` -o tda_executable -w #Compila el código fuente y crea el ejecutable
+
+mv tda_executable /opt/TDA_LINUX 											#mueve el ejecutable a la carpeta TDA_LINUX 
+cp logo.png /opt/TDA_LINUX 	 											#mueve el ejecutable a la carpeta TDA_LINUX 
+
+echo "Creando acceso directo...\n"											#Mostrar mensaje
+touch /opt/TDA_LINUX/TDA.desktop 											#crea el archivo del lanzador en la carpeta TDA_LINUX llamado TDA
+
+shopt -s xpg_echo
+echo "[Desktop Entry]\nVersion=0.1\nName=TDA_LINUX\nComment=Televisión Digitla Abierta Venezolana\nExec=/opt/TDA_LINUX/tda_executable\nIcon=/opt/TDA_LINUX/logo.png\nTerminal=false\nType=Application\nCategories=Video;AudioVideo;" > /opt/TDA_LINUX/TDA.desktop
+
+chmod 777 -R /opt/TDA_LINUX/											#Permisos de ejecución del lanzador
+
+sudo mv /opt/TDA_LINUX/TDA.desktop /usr/share/applications/								#Mover a aplicaciones
+
+output=$(whoami)							#Obtener el nombre de usuario
+
+sudo usermod -a -G video $output 					#Anadir usuario al grupo audio el usuario
+
+echo "Copiando regla udev...\n"												#Mostrar mensaje
+cp -R 40_usb.rules /etc/udev/rules.d/ 	            									#Mover las reglas Udev al sistema
+echo "Reiniciando reglas udev...\n"												#Mostrar mensaje
+sudo udevadm control --reload-rules && udevadm trigger                           					#Reiniciar las reglas
+
+

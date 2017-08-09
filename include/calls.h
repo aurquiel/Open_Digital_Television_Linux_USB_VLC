@@ -1,3 +1,20 @@
+ /* TDA_LINUX is a USB control rutine and multimedia rutine to the Dongle
+    USB of Digital Televesion developed by the CENDIT Fundation.
+    Copyright (C) 2017  Edgar Gomez
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
 #ifndef CALLS_H_INCLUDED
 #define CALLS_H_INCLUDED
 
@@ -50,7 +67,7 @@
 //------------------------------------CABEZERAS FUNCIONES COMIENZO----------------------------------------------
 void procedimiento_de_llamada_destruir();                                               //Procedimiento de llamada para cuando la ventana se cierre
 void procedimiento_de_llamada_reproductor_widget(GtkWidget *widget);                    //Procedimiento de llamada para insertar el reproductor
-void procedimiento_de_llamada_hilo_recepcion(void);                                     //Procedimiento de llamada para comenzar el hilo de recepción de paquetes BTS
+int procedimiento_de_llamada_hilo_recepcion(void);                                     //Procedimiento de llamada para comenzar el hilo de recepción de paquetes BTS
 void procedimiento_de_llamada_reproducir_pausar(GtkWidget *widget, gpointer data);      //Procedimiento de llamada para reproducir o pausar
 void procedimiento_de_llamada_detener(void);                                            //Procedimiento de llamada para detener_producción
 void procedimiento_de_llamada_volumen(GtkWidget *widget, gpointer data);                //Procedimiento de llamada para colocar volúmen
@@ -70,7 +87,7 @@ libvlc_instance_t       *instancia_vlc;
 ///Estructura reproductor libvlc.
 libvlc_media_player_t   *reproductor;
 ///Media del reproductor.
-static libvlc_media_t *media;
+libvlc_media_t *media;
 ///Variable para controlar el intercambio de estados entre pantalla completa o no pantalla completa.
 /*!
 Variable controlador_pantalla_completa:
@@ -95,7 +112,7 @@ GtkWidget
             ///GTK_WIDGET para el botón pantalla completa.
             *pantalla_completa,
             ///GTK_WIDGET para la caja de botones verticales.
-            *caja_vertical_botones_canales,
+            *caja_vertical_botones_programacion,
             ///GTK_WIDGET scroll ventana
             *ventana_desplazamiento,
             ///GTK_WIDGET para la caja horizontal que contiene botones de control.
@@ -110,7 +127,7 @@ GtkWidget
             *etiqueta_senial,
             ///GTK_WIDGET para frame estado_usb.
             *frame_estado_usb,
-            ///GTK_WIDGET para frame seial.
+            ///GTK_WIDGET para frame senial.
             *frame_senial,
             ///GTK_WIDGET para boton estado_usb.
             *boton_estado_usb,
@@ -122,60 +139,60 @@ GtkAdjustment *ajuste,
 ///GTK_ADJUSTMENT para la escala de desplazmiento de la barra del widget ventana_desplazamiento.
               *desplazamiento;
 
-//Variables para botones de canales comienzo
+//Variables para botones de programacion comienzo
 //Frecuencia de 521000 Hz Comienzo
-///GTK_WIDGET para el botón del canal a la fruencia de 521000, ID=57856, VTV.
-GtkWidget *boton_canal_521000_57856;
-///GTK_WIDGET para el botón del canal a la fruencia de 521000, ID=57857, 123VTV.
-GtkWidget *boton_canal_521000_57857;
-///GTK_WIDGET para el botón del canal a la fruencia de 521000, ID=57858, Colombela.
-GtkWidget *boton_canal_521000_57858;
-///GTK_WIDGET para el botón del canal a la fruencia de 521000, ID=57859, Venevision.
-GtkWidget *boton_canal_521000_57859;
-///GTK_WIDGET para el botón del canal a la fruencia de 521000, ID=57860, AlbaTV.
-GtkWidget *boton_canal_521000_57860;
-///GTK_WIDGET para el botón del canal a la fruencia de 521000, ID=57880, VTVMovil.
-GtkWidget *boton_canal_521000_57880;
+///GTK_WIDGET para el botón del programa a la fruencia de 521000, ID=57856, VTV.
+GtkWidget *boton_programa_521000_57856;
+///GTK_WIDGET para el botón del programa a la fruencia de 521000, ID=57857, 123VTV.
+GtkWidget *boton_programa_521000_57857;
+///GTK_WIDGET para el botón del programa a la fruencia de 521000, ID=57858, Colombela.
+GtkWidget *boton_programa_521000_57858;
+///GTK_WIDGET para el botón del programa a la fruencia de 521000, ID=57859, Venevision.
+GtkWidget *boton_programa_521000_57859;
+///GTK_WIDGET para el botón del programa a la fruencia de 521000, ID=57860, AlbaTV.
+GtkWidget *boton_programa_521000_57860;
+///GTK_WIDGET para el botón del programa a la fruencia de 521000, ID=57880, VTVMovil.
+GtkWidget *boton_programa_521000_57880;
 //Frecuencia de 521000 Hz Fin
 //Frecuencia de 533000 Hz Comienzo
-///GTK_WIDGET para el botón del canal a la fruencia de 533000, ID=57920, TVES.
-GtkWidget *boton_canal_533000_57920;
-///GTK_WIDGET para el botón del canal a la fruencia de 533000, ID=57921, ANTV.
-GtkWidget *boton_canal_533000_57921;
-///GTK_WIDGET para el botón del canal a la fruencia de 533000, ID=57922, SIBCHID.
-GtkWidget *boton_canal_533000_57922;
-///GTK_WIDGET para el botón del canal a la fruencia de 533000, ID=57944, TVESmovil.
-GtkWidget *boton_canal_533000_57944;
+///GTK_WIDGET para el botón del programa a la fruencia de 533000, ID=57920, TVES.
+GtkWidget *boton_programa_533000_57920;
+///GTK_WIDGET para el botón del programa a la fruencia de 533000, ID=57921, ANTV.
+GtkWidget *boton_programa_533000_57921;
+///GTK_WIDGET para el botón del programa a la fruencia de 533000, ID=57922, SIBCHID.
+GtkWidget *boton_programa_533000_57922;
+///GTK_WIDGET para el botón del programa a la fruencia de 533000, ID=57944, TVESmovil.
+GtkWidget *boton_programa_533000_57944;
 //Frecuencia de 533000 Hz Fin
 //Frecuencia de 539000 Hz Comienzo
-///GTK_WIDGET para el botón del canal a la fruencia de 539000, ID=57952, FANBTV.
-GtkWidget *boton_canal_539000_57952;
-///GTK_WIDGET para el botón del canal a la fruencia de 539000, ID=57953, CCTV.
-GtkWidget *boton_canal_539000_57953;
-///GTK_WIDGET para el botón del canal a la fruencia de 539000, ID=57954, AvilaTV.
-GtkWidget *boton_canal_539000_57954;
-///GTK_WIDGET para el botón del canal a la fruencia de 539000, ID=57955, PDVSATV.
-GtkWidget *boton_canal_539000_57955;
-///GTK_WIDGET para el botón del canal a la fruencia de 539000, ID=57956, RussiaToday.
-GtkWidget *boton_canal_539000_57956;
-///GTK_WIDGET para el botón del canal a la fruencia de 539000, ID=57976, AVilaTVmovil.
-GtkWidget *boton_canal_539000_57976;
+///GTK_WIDGET para el botón del programa a la fruencia de 539000, ID=57952, FANBTV.
+GtkWidget *boton_programa_539000_57952;
+///GTK_WIDGET para el botón del programa a la fruencia de 539000, ID=57953, CCTV.
+GtkWidget *boton_programa_539000_57953;
+///GTK_WIDGET para el botón del programa a la fruencia de 539000, ID=57954, AvilaTV.
+GtkWidget *boton_programa_539000_57954;
+///GTK_WIDGET para el botón del programa a la fruencia de 539000, ID=57955, PDVSATV.
+GtkWidget *boton_programa_539000_57955;
+///GTK_WIDGET para el botón del programa a la fruencia de 539000, ID=57956, RussiaToday.
+GtkWidget *boton_programa_539000_57956;
+///GTK_WIDGET para el botón del programa a la fruencia de 539000, ID=57976, AVilaTVmovil.
+GtkWidget *boton_programa_539000_57976;
 //Frecuencia de 539000 Hz Fin
 //Frecuencia de 527000 Hz Comienzo
-///GTK_WIDGET para el botón del canal a la fruencia de 527000, ID=57888, ViveTV.
-GtkWidget *boton_canal_527000_57888;
-///GTK_WIDGET para el botón del canal a la fruencia de 527000, ID=57889, Telesur.
-GtkWidget *boton_canal_527000_57889;
-///GTK_WIDGET para el botón del canal a la fruencia de 527000, ID=57890, Meridiano.
-GtkWidget *boton_canal_527000_57890;
-///GTK_WIDGET para el botón del canal a la fruencia de 527000, ID=57891, Televen.
-GtkWidget *boton_canal_527000_57891;
-///GTK_WIDGET para el botón del canal a la fruencia de 527000, ID=57892, Conciencia.
-GtkWidget *boton_canal_527000_57892;
-///GTK_WIDGET para el botón del canal a la fruencia de 527000, ID=57912, Telesurmovil.
-GtkWidget *boton_canal_527000_57912;
+///GTK_WIDGET para el botón del programa a la fruencia de 527000, ID=57888, ViveTV.
+GtkWidget *boton_programa_527000_57888;
+///GTK_WIDGET para el botón del cprograma a la fruencia de 527000, ID=57889, Telesur.
+GtkWidget *boton_programa_527000_57889;
+///GTK_WIDGET para el botón del programa a la fruencia de 527000, ID=57890, Meridiano.
+GtkWidget *boton_programa_527000_57890;
+///GTK_WIDGET para el botón del programa a la fruencia de 527000, ID=57891, Televen.
+GtkWidget *boton_programa_527000_57891;
+///GTK_WIDGET para el botón del programa a la fruencia de 527000, ID=57892, Conciencia.
+GtkWidget *boton_programa_527000_57892;
+///GTK_WIDGET para el botón del programa a la fruencia de 527000, ID=57912, Telesurmovil.
+GtkWidget *boton_programa_527000_57912;
 //Frecuencia de 527000 Hz Fin
-//Variables para botones de canales fin
+//Variables para botones de programacio fin
 
 ///GTK_IMAGE variable que maneja los iconos e imagenes de todo el programa
 GtkImage  *imagen;
@@ -183,15 +200,6 @@ GtkImage  *imagen;
 ///GTK_IMAGE variable que maneja la informacion de los iconos e imagenes de todo el programa
 GdkPixbuf *icon;
 
-//! Procedimiento de llamada para destruir todos los widget cuando la ventana se cierre.
-void procedimiento_de_llamada_destruir()
-{
-    libusb_close(manejador_dispositivo_usb);        //Cerrar el manejador del dispositivo
-    libvlc_media_player_release(reproductor);       //Liberar el Reproductor de la sesión libvlc
-    libvlc_release(instancia_vlc);                  //Cerrar la sesión de libvlc
-    gtk_main_quit();                                //Finalizar la ventana de aplicación
-    std::terminate();                               //Terminar todos los hilos y los demonios
-}
 
 //! Procedimiento de llamada para embeber el widget reproductor.
 /*!
@@ -204,34 +212,35 @@ void procedimiento_de_llamada_reproductor_widget(GtkWidget *widget)
 
 //! Procedimiento de llamada para comenzar la recepción de paquetes BTS y reproducirlos.
 /*!
-  @return 0 al finalizar el hilo.
+  @return 0 al finalizar.
+  @return -1 en caso de que el dispositivo no este conectado.
 
   Advertencias que muestra:
   - Si dipositivo está desconectado: "No se puede reproducir: El dispositivo esta desconectado.".
 */
-void procedimiento_de_llamada_hilo_recepcion(void)
+int procedimiento_de_llamada_hilo_recepcion(void)
 {
+    if ((funcion_leer_estado_hotplug()<1)||(funcion_leer_estado_hotplug()==2))                  //Si el estado de conexión es menor a 1 o igual a 2
+    {
+        std::cout<<"No se puede reproducir: El dispositivo esta desconectado."<<std::endl;      //Mostar la siguiente advertencia
+        return -1;
+    }
+
     procedimiento_de_llamada_detener();                                                         //Llamada a la función procedimeinto_de_llamada_detener
 
     std::thread hilo_recepcion_BTS (procedimiento_ciclo_recepcion_BTS);                         //Hilo que ejecuta la función de recibir los paquetes BTS y guardarlos en un archivo .TS
     hilo_recepcion_BTS.detach();                                                                //Crea un demonio del hilo hilo_recepcion_BTS
 
-    if ((funcion_leer_estado_hotplug()<1)||(funcion_leer_estado_hotplug()==2))                  //Si el estado de conexión es menor a 1 o igual a 2
-    {
-        std::cout<<"No se puede reproducir: El dispositivo esta desconectado."<<std::endl;      //Mostar la siguiente advertencia
-    }
-    else                                                                                        //Sino
-    {
+    procedimiento_retardo_milisegundos(2000);                                                   //Esperar 2000ms
+    procedimiento_de_llamada_volumen(volumen, NULL);                                            //Se coloca el volumen lo que indica el boton de volumen, evita que se pierda el volumen cundo se cambie de canal
+    procedimiento_media_callbacks();                                                            //Funciones de llamada para obtner la media del video
 
-        procedimiento_retardo_milisegundos(2000);                                                //Esperar 2000ms
-        libvlc_audio_set_volume(reproductor,int(gtk_scale_button_get_value(GTK_SCALE_BUTTON(volumen)))); //Se coloca el volumen lo que indica el boton de volumen, evita que se pierda el volumen cundo se cambie de canal
+    icon = gdk_pixbuf_new_from_inline (-1, pausar_en_linea, FALSE, NULL);                       //Asignar los datos de la imagen a icon
+    imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                        //Asignar a imagen icon
+    gtk_button_set_image (GTK_BUTTON(boton_reproducir_pausar), GTK_WIDGET(imagen));             //Añadir la imagen al boton boton_reproducir_pausar
+    gtk_button_set_label (GTK_BUTTON(boton_reproducir_pausar), "Pausar");                       //Cambiar etiqueta del reproductor
 
-        procedimiento_media_callbacks();                                                        //Funciones de llamada para obtner la media del video
-
-        icon = gdk_pixbuf_new_from_inline (-1, pausar_en_linea, FALSE, NULL);                   //Asignar los datos de la imagen a icon
-        imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_reproducir_pausar), GTK_WIDGET(imagen));         //Añadir la imagen al boton boton_reproducir_pausar
-    }
+    return 0;
 }
 
 //! Procedimiento de llamada para pausar y reproducir el video.
@@ -243,16 +252,17 @@ void procedimiento_de_llamada_reproducir_pausar(GtkWidget *widget, gpointer data
 {
     if(!funcion_leer_estado_frecuencia())                                                   //Si ninguna frecuencia fue establecida antes de que el boton_reproducir_pausar fuera presionado
     {
-        procedimiento_canal_521000_57856();       				                            //Estable el canal VTV como inical
+        procedimiento_programa_521000_57856();       				                        //Estable el program VTV como inical
     }
 
     if(libvlc_media_player_is_playing(reproductor) == 1)                                    //Si el reproductor esta reproduciendo
     {
         libvlc_media_player_pause(reproductor);                                             //Pausar el reproductor
 
-        icon = gdk_pixbuf_new_from_inline (-1, reproducir_en_linea, FALSE, NULL);           //Asignar los datos de la imagen a icon
+        icon = gdk_pixbuf_new_from_inline (-1, reproducir_en_linea, FALSE, NULL);               //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                //Asignar a imagen icon
         gtk_button_set_image (GTK_BUTTON(widget), GTK_WIDGET(imagen));                      //Añadir la imagen al boton boton_reproducir_pausar
+        gtk_button_set_label (GTK_BUTTON(widget), "Reproducir");                       //Cambiar etiqueta del reproductor
     }
     else
         procedimiento_de_llamada_hilo_recepcion();                                          //Comenzar el hilo de la recepción de paquetes BTS y reproducirlos
@@ -263,19 +273,10 @@ void procedimiento_de_llamada_detener(void)
 {
     libvlc_media_player_stop(reproductor);                                                  //Detener el reproductor
 
-    if(libvlc_media_player_is_playing(reproductor) == 1)                                    //Si el reproductor está reproduciendo
-    {
-        icon = gdk_pixbuf_new_from_inline (-1, pausar_en_linea, FALSE, NULL);               //Asignar los datos de la imagen a icon
-        imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_reproducir_pausar), GTK_WIDGET(imagen));     //Añadir la imagen al boton boton_reproducir_pausar
-    }
-    else                                                                                    //Sino
-    {
-        icon = gdk_pixbuf_new_from_inline (-1, reproducir_en_linea, FALSE, NULL);           //Asignar los datos de la imagen a icon
-        imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_reproducir_pausar), GTK_WIDGET(imagen));     //Añadir la imagen al boton boton_reproducir_pausar
-    }
-
+    icon = gdk_pixbuf_new_from_inline (-1, reproducir_en_linea, FALSE, NULL);               //Asignar los datos de la imagen a icon
+    imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
+    gtk_button_set_image (GTK_BUTTON(boton_reproducir_pausar), GTK_WIDGET(imagen));         //Añadir la imagen al boton boton_reproducir_pausar
+    gtk_button_set_label (GTK_BUTTON(boton_reproducir_pausar), "Reproducir");               //Cambiar etiqueta del reproductor
     procedimiento_retardo_milisegundos(300);                                                //Retardo
 
 }
@@ -426,6 +427,10 @@ void procedimiento_de_llamada_tecla_presionada(GtkWidget *widget, GdkEventKey *e
         }
         break;                                                                                      //Romper
         //MI caso
+
+
+
+        //****ESTA TECLA ES PARA PROBRAR LAS FUNCIONES DE SAMSUNG****//////
         case GDK_KEY_p:                                                                             //Caso de la tecla S
         {
             SemcoTC90527_GetDatas(apuntador_datos_demulador);
@@ -434,13 +439,13 @@ void procedimiento_de_llamada_tecla_presionada(GtkWidget *widget, GdkEventKey *e
             std::cout<<"post_BER: "<<apuntador_datos_demulador->post_BER<<std::endl;
             std::cout<<"Code Rate: "<<apuntador_datos_demulador->code_rate<<std::endl;
             std::cout<<"Mode: "<<apuntador_datos_demulador->mode_90527<<std::endl;
-            std::cout<<"bLOck: "<<apuntador_datos_demulador->bLock<<std::endl;
+            std::cout<<"block: "<<apuntador_datos_demulador->bLock<<std::endl;
         }
         break;                                                                                      //Romper
     }
 }
 
-//! Variable para indicar la posicion del buffer a copiar a la media del reproductor.
+//! Variable para indicar la posicion del buffer de 5,1 Mb a copiar a la data media del reproductor.
 /*!
      Posiciones={0,245760,491520,737280,983040,1228800,1474560,1720320,1966080,2211840,2457600,2703360,2949120,3194880,3440640,3686400,3932160,4177920,4423680,4669440}.
 */
@@ -456,7 +461,7 @@ static int posicion_media_buffer=0;
 int abrir_media(void *opaque, void **datap, long unsigned int *sizep)
 {
     *sizep = tamanio_buffer;                                                //Asigna el tamaño de los datos
-    *datap = opaque;                                                        //Coloca como data con el apuntador al buffer rotativo
+    *datap = opaque;                                                        //Coloca como data el apuntador al buffer rotativo
     return 0;                                                               //Devuelve cero
 }
 
@@ -467,10 +472,10 @@ int abrir_media(void *opaque, void **datap, long unsigned int *sizep)
     \param len longuitud de los datos a leer.
     \return devuelve la cantidad de datos leidos.
 */
-long int leer_media(void *opaque, unsigned char *buf,long unsigned int len)
+long int leer_media(void *opaque, unsigned char *buffer_de_llamada,long unsigned int longuitud_de_llamada)
 {
-    len=tamanio_buffer_MPEG_TS;                                                 //Longuitud de datos a leer igual al tamanio_buffer_MPEG_TS
-    std::memcpy(buf,((unsigned char*)opaque+posicion_media_buffer), len);       //copiar los dtoas del buffer rotativo al buffer de lectura
+    longuitud_de_llamada = tamanio_buffer_MPEG_TS;                                                 //Longuitud de datos a leer igual al tamanio_buffer_MPEG_TS
+    std::memcpy(buffer_de_llamada,((unsigned char*)opaque+posicion_media_buffer), longuitud_de_llamada);       //copiar los dtoas del buffer rotativo al buffer de lectura
     procedimiento_retardo_milisegundos(2);                                      //Retardo par evitar uso excesivo del CPU
     posicion_media_buffer+=tamanio_buffer_MPEG_TS;                              //Aumentar posición_media_buffer con los datos ya leidos
 
@@ -498,7 +503,9 @@ int posicionar_media(void *opaque, uint64_t offset)
 */
 void procedimiento_media_callbacks(void)
 {
-    media = libvlc_media_new_callbacks(     //media igual a los datos BTS que llegan la pueert USB su llenado es asincrónico
+    posicion_media_buffer=0;
+
+    media = libvlc_media_new_callbacks(     //media igual a los datos BTS que llegan la puerto USB su llenado es asincrónico
                          instancia_vlc,     //Instancia vlc
                            abrir_media,     //función de llamada abrir_media()
                             leer_media,     //función de llamada leer_media()
@@ -506,17 +513,17 @@ void procedimiento_media_callbacks(void)
                                   NULL,     //NULL cerrar media
      apuntador_al_buffer_recepcion_BTS);    //Apuntador al buffer roatativo
 
-    libvlc_media_add_option(media, funcion_leer_id());                                      //Se coloca el ID del canal deseado a reproducir
+    libvlc_media_add_option(media, funcion_leer_id());                                      //Se coloca el ID del programa deseado a reproducir
     libvlc_media_player_set_media(reproductor, media);                                      //Se coloca el medio media en el reporductor
     libvlc_media_player_play(reproductor);                                                  //Reproducir
 }
 
-/// Variable para manejar las imagenes de estado_hotplug
+/// Variable para manejar las imagenes del layaout caja_horizontal_indicadores
 static int estado=1;
 
 //! Procedimiento procedimiento_imagenes_caja_horizontal_indicadores.
 /*!
-    Procedimiento para manejar las imagenes de estado_hotplug: conectado o desconectado, manejar las imagenes de calidad de señal.
+    Procedimiento para manejar las imagenes de estado_hotplug: conectado o desconectado, manejar las imagenes de intensidad de señal.
 */
 int procedimiento_imagenes_caja_horizontal_indicadores(void* a)
 {
@@ -539,5 +546,14 @@ int procedimiento_imagenes_caja_horizontal_indicadores(void* a)
         return true;                                                                               //Devuelve verdadero
 }
 
+//! Procedimiento de llamada para destruir todos los widget cuando la ventana se cierre.
+void procedimiento_de_llamada_destruir()
+{
+    libusb_close(manejador_dispositivo_usb);        //Cerrar el manejador del dispositivo
+    libvlc_media_player_release(reproductor);       //Liberar el Reproductor de la sesión libvlc
+    libvlc_release(instancia_vlc);                  //Cerrar la sesión de libvlc
+    gtk_main_quit();                                //Finalizar la ventana de aplicación
+    std::terminate();                               //Terminar todos los hilos y los demonios
+}
 
 #endif // CALLS_H_INCLUDED

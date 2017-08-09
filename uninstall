@@ -1,0 +1,9 @@
+#!/bin/bash
+# My first script
+
+rm -R /opt/TDA_LINUX                   						#eliminar la carpeta TDA_LINUX
+rm /etc/udev/rules.d/40_usb.rules     						#eliminar reglas Udev
+rm /usr/share/applications/TDA.desktop						#eliminar lanzador
+sudo udevadm control --reload-rules && udevadm trigger   		        #Reiniciar las reglas Udev
+echo "Desisntalación finalizada.\n"						#Mostrar mensaje
+

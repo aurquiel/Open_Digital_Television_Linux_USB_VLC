@@ -1,3 +1,20 @@
+ /* TDA_LINUX is a USB control rutine and multimedia rutine to the Dongle
+    USB of Digital Televesion developed by the CENDIT Fundation.
+    Copyright (C) 2017  Edgar Gomez
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
 #ifndef SAMSUNG_H_INCLUDED
 #define SAMSUNG_H_INCLUDED
 
@@ -356,7 +373,7 @@ unsigned short  SemcoTC90527_GetDatas(lpTC90527Data lpTD)
 
 	if(a_seg == 1)
 	 {
-		   vberorg = 0x02;
+          vberorg = 0x02;
 		  tempwrite = vberorg & 0x7F; //vberorg Set '0'
 		  tempwrite = vberorg | 0x40; //vberbst Set '1'
 		  TC90527_I2cWrite(0xF8, tempwrite);
@@ -365,7 +382,7 @@ unsigned short  SemcoTC90527_GetDatas(lpTC90527Data lpTD)
 	 {
 		  if(fecbst == 1)  //fecbst = 1
 		  {
-			    vberorg = 0x02;
+			   vberorg = 0x02;
 			   tempwrite = vberorg | 0xC0; //vberorg set '1', vberbst Set '1'
 			   TC90527_I2cWrite(0xF8, tempwrite);
 		  }
@@ -604,7 +621,7 @@ unsigned char SemcoSTV4100_Initialize()
    return ret;
 }
 
-//! Función para sintonizar una freuencia deseada.
+//! Función para sintonizar una frecuencia deseada.
 /*!
   \param nFrequency_KHz frecuencia en kilohertz.
   \param BW Ancho de banda.
@@ -617,7 +634,7 @@ unsigned char SemcoSTV4100_SetFrequency(unsigned long nFrequency_KHz, unsigned c
 	unsigned char ret;
 	int i;
 	unsigned char uBuf,CalValue,CLPF_CalValue;
-  unsigned long InternalClock;
+    unsigned long InternalClock;
 	unsigned long STV4100_Fxtal,result;
 	unsigned char cpma;
 	unsigned long N = 0, F = 0;
@@ -863,9 +880,8 @@ unsigned char TC90527_I2cWrite(unsigned char Addr,unsigned char Data)
                                                                              1,     //wLength SETPTUDATA[6 y 7], numero de bytes a escribir o leer
                                                                              20);    //Tiempo para esperar la respuesta
 
-    int resultado=buffer[0];                                                        //Asignar a resultado el valor del buffer
-    if ((resultado!=0)||(respuesta!=1))                                             //Si resultado es distinto de cero o respuesta es distinto de uno
-        std::cout<<"Error en escritura transferencia de control al demodulador TC90527_I2cWrite_USB"<<std::endl;//Mostrar la siguiente advertencia
+    if ((buffer[0]!=0)||(respuesta!=1))                                             //Si resultado es distinto de cero o respuesta es distinto de uno
+            std::cout<<"Error en escritura transferencia de control al demodulador TC90527_I2cWrite_USB"<<std::endl;//Mostrar la siguiente advertencia
 
     return buffer[0];   //Regresa el estado de la transferencia de control 0:Exitosa 1:Fallida
 }
@@ -922,11 +938,11 @@ unsigned char STV4100_I2C_Write(unsigned char Addr, unsigned char Data)
                                                                         wValue,     //wValue SETPTUDATA[2 y 3] el valor a pasar
                                                                              0,     //wIndex SETPTUDATA[4 y 5], indica la dirección si es desde el afrintión al dispositivo, el numero de EndPoint.
                                                                         buffer,     //Recive un apuntador a los datos a leer o escribir
-                                                                             1,     //wLength SETPTUDATA[6 y 7], numero de bytes a escribir o leer
+                                                                             1,     //wLength SETPTUDATA[6 y 7], longuitud del buffer
                                                                              20);    //Tiempo para esperar la respuesta
 
-    int resultado=buffer[0];                                                        //Asignar a resultado el valor del buffer
-    if ((resultado!=0)||(respuesta!=1))                                             //Si resultado es distinto de cero o respuesta es distinto de uno
+                                                      //Asignar a resultado el valor del buffer
+    if ((buffer[0]!=0)||(respuesta!=1))                                             //Si resultado es distinto de cero o respuesta es distinto de uno
         std::cout<<"Error en escritura transferencia de control al sintonizador STV4100_I2C_Write_USB"<<std::endl;//Mostrar la siguiente advertencia
 
     return buffer[0];   //Regresa el estado de la transferencia de control 0:Exitosa 1:Fallida

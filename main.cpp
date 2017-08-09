@@ -13,8 +13,6 @@
 //! Función main C++.
 int main(int argc, char *argv[])
 {
-    XInitThreads();                                                                 //Inicializar Xlib para programas con hilos
-
     std::thread hilo_hotplug_USB(procedimiento_hotplug);                            //Hilo que ejecuta el estado de hotplug
     hilo_hotplug_USB.detach();                                                      //Crea un demonio del hilo hilo_hotplug_USB
 
@@ -22,6 +20,8 @@ int main(int argc, char *argv[])
     hilo_deterner_reproductor_hotplug.detach();                                     //Crea un demonio del hilo hilo_deterner_reproductor_hotplug
 
     gdk_threads_add_timeout(2,procedimiento_imagenes_caja_horizontal_indicadores,NULL); //Función de gdk dedicada a chequear el estado de hotplug cada dos segundos para realizar el cambio de las imagenes
+
+    XInitThreads();                                                                 //Inicializar Xlib para programas con hilos
 
     // Función que se encargar de comenzar el ciclo infito de GTK3.
     gtk_init(&argc, &argv);
@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
         //Inicio Layaouts
         rejilla = gtk_grid_new();                                                               //Creación rejilla para designar la distribución de los widgets
         caja_vertical_mayor = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);                         //Creación caja horizontal para alojar botones de control
-        caja_vertical_botones_canales = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);               //Creación caja vertical para alojar botones de los canales
-        gtk_box_set_spacing (GTK_BOX(caja_vertical_botones_canales),1);                         //Ingreseando espaciado entre elementos(widgets)
+        caja_vertical_botones_programacion = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);          //Creación caja vertical para alojar botones de los canales
+        gtk_box_set_spacing (GTK_BOX(caja_vertical_botones_programacion),1);                    //Ingreseando espaciado entre elementos(widgets)
         caja_horizontal_botones_de_control = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);        //Creación caja horizontal para alojar botones de control
         caja_horizontal_indicadores = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);               //Creación caja horizontal para alojar botones de indicadores
         //Fin Layaouts
@@ -101,172 +101,171 @@ int main(int argc, char *argv[])
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
         gtk_button_set_image (GTK_BUTTON(pantalla_completa), GTK_WIDGET(imagen));               //Añadir la imagen al boton boton_detener
 
-        //Creación de los botones de los Canales Comienzo
+        //Creación de los botones de los programas Comienzo
         //Frecuencia de 521000 Hz Comienzo
-        boton_canal_521000_57856 = gtk_button_new_with_label("VTV");
-        boton_canal_521000_57857 = gtk_button_new_with_label("123 TV");
-        boton_canal_521000_57858 = gtk_button_new_with_label("Colombeia");
-        boton_canal_521000_57859 = gtk_button_new_with_label("Venevision");
-        boton_canal_521000_57860 = gtk_button_new_with_label("AlbaTV");
-        boton_canal_521000_57880 = gtk_button_new_with_label("VTVmovil");
+        boton_programa_521000_57856 = gtk_button_new_with_label("VTV");
+        boton_programa_521000_57857 = gtk_button_new_with_label("123 TV");
+        boton_programa_521000_57858 = gtk_button_new_with_label("Colombeia");
+        boton_programa_521000_57859 = gtk_button_new_with_label("Venevision");
+        boton_programa_521000_57860 = gtk_button_new_with_label("AlbaTV");
+        boton_programa_521000_57880 = gtk_button_new_with_label("VTVmovil");
         //Frecuencia de 521000 Hz Fin
         //Frecuencia de 533000 Hz Comienzo
-        boton_canal_533000_57920 = gtk_button_new_with_label("TVES");
-        boton_canal_533000_57921 = gtk_button_new_with_label("ANTV");
-        boton_canal_533000_57922 = gtk_button_new_with_label("SIBCHID");
-        boton_canal_533000_57944 = gtk_button_new_with_label("TVESmovil");
+        boton_programa_533000_57920 = gtk_button_new_with_label("TVES");
+        boton_programa_533000_57921 = gtk_button_new_with_label("ANTV");
+        boton_programa_533000_57922 = gtk_button_new_with_label("SIBCHID");
+        boton_programa_533000_57944 = gtk_button_new_with_label("TVESmovil");
         //Frecuencia de 533000 Hz Fin
         //Frecuencia de 539000 Hz Comienzo
-        boton_canal_539000_57952 = gtk_button_new_with_label("FANBTV");
-        boton_canal_539000_57953 = gtk_button_new_with_label("CCTV");
-        boton_canal_539000_57954 = gtk_button_new_with_label("AvilaTV");
-        boton_canal_539000_57955 = gtk_button_new_with_label("PDVSATV");
-        boton_canal_539000_57956 = gtk_button_new_with_label("RussiaToday");
-        boton_canal_539000_57976 = gtk_button_new_with_label("AVilaTVmovil");
+        boton_programa_539000_57952 = gtk_button_new_with_label("FANBTV");
+        boton_programa_539000_57953 = gtk_button_new_with_label("CCTV");
+        boton_programa_539000_57954 = gtk_button_new_with_label("AvilaTV");
+        boton_programa_539000_57955 = gtk_button_new_with_label("PDVSATV");
+        boton_programa_539000_57956 = gtk_button_new_with_label("RussiaToday");
+        boton_programa_539000_57976 = gtk_button_new_with_label("AVilaTVmovil");
         //Frecuencia de 539000 Hz Fin
         //Frecuencia de 527000 Hz Comienzo
-        boton_canal_527000_57888 = gtk_button_new_with_label("ViveTV");
-        boton_canal_527000_57889 = gtk_button_new_with_label("Telesur");
-        boton_canal_527000_57890 = gtk_button_new_with_label("Meridiano");
-        boton_canal_527000_57891 = gtk_button_new_with_label("Televen");
-        boton_canal_527000_57892 = gtk_button_new_with_label("Conciencia");
-        boton_canal_527000_57912 = gtk_button_new_with_label("TelesurMovil");
+        boton_programa_527000_57888 = gtk_button_new_with_label("ViveTV");
+        boton_programa_527000_57889 = gtk_button_new_with_label("Telesur");
+        boton_programa_527000_57890 = gtk_button_new_with_label("Meridiano");
+        boton_programa_527000_57891 = gtk_button_new_with_label("Televen");
+        boton_programa_527000_57892 = gtk_button_new_with_label("Conciencia");
+        boton_programa_527000_57912 = gtk_button_new_with_label("TelesurMovil");
         //Frecuencia de 527000 Hz Fin
-        //Creación de los botones de los Canales Fin
+        //Creación de los botones de los programas Fin
 
         //Colocar imagenes para botones de canales comienzo
         //Frecuencia de 521000 Hz Comienzo
         icon = gdk_pixbuf_new_from_inline (-1, vtv_en_linea, FALSE, NULL);                      //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_521000_57856), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57856
+        gtk_button_set_image (GTK_BUTTON(boton_programa_521000_57856), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57856
 
         icon = gdk_pixbuf_new_from_inline (-1, tv123_en_linea, FALSE, NULL);                    //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_521000_57857), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57857
+        gtk_button_set_image (GTK_BUTTON(boton_programa_521000_57857), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57857
 
         icon = gdk_pixbuf_new_from_inline (-1, colombeia_en_linea, FALSE, NULL);                //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_521000_57858), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57858
+        gtk_button_set_image (GTK_BUTTON(boton_programa_521000_57858), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57858
 
         icon = gdk_pixbuf_new_from_inline (-1, venevision_en_linea, FALSE, NULL);               //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_521000_57859), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57859
+        gtk_button_set_image (GTK_BUTTON(boton_programa_521000_57859), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57859
 
         icon = gdk_pixbuf_new_from_inline (-1, alba_en_linea, FALSE, NULL);                     //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_521000_57860), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57860
+        gtk_button_set_image (GTK_BUTTON(boton_programa_521000_57860), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57860
 
         icon = gdk_pixbuf_new_from_inline (-1, vtv_en_linea, FALSE, NULL);                      //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_521000_57880), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57880
+        gtk_button_set_image (GTK_BUTTON(boton_programa_521000_57880), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57880
         //Frecuencia de 521000 Hz Fin
         //Frecuencia de 533000 Hz Comienzo
         icon = gdk_pixbuf_new_from_inline (-1, tves_en_linea, FALSE, NULL);                     //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_533000_57920), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57920
+        gtk_button_set_image (GTK_BUTTON(boton_programa_533000_57920), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57920
 
         icon = gdk_pixbuf_new_from_inline (-1, antv_en_linea, FALSE, NULL);                     //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_533000_57921), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57921
+        gtk_button_set_image (GTK_BUTTON(boton_programa_533000_57921), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57921
 
         icon = gdk_pixbuf_new_from_inline (-1, sibci_en_linea, FALSE, NULL);                    //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_533000_57922), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57922
+        gtk_button_set_image (GTK_BUTTON(boton_programa_533000_57922), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57922
 
         icon = gdk_pixbuf_new_from_inline (-1, tves_en_linea, FALSE, NULL);                     //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_533000_57944), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_521000_57944
+        gtk_button_set_image (GTK_BUTTON(boton_programa_533000_57944), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_521000_57944
         //Frecuencia de 533000 Hz Fin
         //Frecuencia de 539000 Hz Comienzo
         icon = gdk_pixbuf_new_from_inline (-1, fanbtv_en_linea, FALSE, NULL);                   //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_539000_57952), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_539000_57952
+        gtk_button_set_image (GTK_BUTTON(boton_programa_539000_57952), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_539000_57952
 
         icon = gdk_pixbuf_new_from_inline (-1, cctv_en_linea, FALSE, NULL);                     //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_539000_57953), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_539000_57953
+        gtk_button_set_image (GTK_BUTTON(boton_programa_539000_57953), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_539000_57953
 
         icon = gdk_pixbuf_new_from_inline (-1, avilatv_en_linea, FALSE, NULL);                  //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_539000_57954), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_539000_57954
+        gtk_button_set_image (GTK_BUTTON(boton_programa_539000_57954), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_539000_57954
 
         icon = gdk_pixbuf_new_from_inline (-1, pdvsatv_en_linea, FALSE, NULL);                  //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_539000_57955), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_539000_57955
+        gtk_button_set_image (GTK_BUTTON(boton_programa_539000_57955), GTK_WIDGET(imagen));        //Añadir la imagen al boton del programa boton_programa_539000_57955
 
         icon = gdk_pixbuf_new_from_inline (-1, russiatoday_en_linea, FALSE, NULL);              //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_539000_57956), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_539000_57956
+        gtk_button_set_image (GTK_BUTTON(boton_programa_539000_57956), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_539000_57956
 
         icon = gdk_pixbuf_new_from_inline (-1, avilatv_en_linea, FALSE, NULL);                  //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_539000_57976), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_539000_57976
+        gtk_button_set_image (GTK_BUTTON(boton_programa_539000_57976), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_539000_57976
         //Frecuencia de 539000 Hz Fin
         //Frecuencia de 527000 Hz Comienzo
         icon = gdk_pixbuf_new_from_inline (-1, vive_en_linea, FALSE, NULL);                     //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_527000_57888), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_527000_57888
+        gtk_button_set_image (GTK_BUTTON(boton_programa_527000_57888), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_527000_57888
 
         icon = gdk_pixbuf_new_from_inline (-1, telesur_en_linea, FALSE, NULL);                  //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_527000_57889), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_527000_57889
+        gtk_button_set_image (GTK_BUTTON(boton_programa_527000_57889), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_527000_57889
 
         icon = gdk_pixbuf_new_from_inline (-1, meridiano_en_linea, FALSE, NULL);                //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_527000_57890), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_527000_57890
+        gtk_button_set_image (GTK_BUTTON(boton_programa_527000_57890), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_527000_57890
 
         icon = gdk_pixbuf_new_from_inline (-1, televen_en_linea, FALSE, NULL);                  //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_527000_57891), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_527000_57891
+        gtk_button_set_image (GTK_BUTTON(boton_programa_527000_57891), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_527000_57891
 
         icon = gdk_pixbuf_new_from_inline (-1, conciencia_en_linea, FALSE, NULL);               //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_527000_57892), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_527000_57892
+        gtk_button_set_image (GTK_BUTTON(boton_programa_527000_57892), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programa_527000_57892
 
         icon = gdk_pixbuf_new_from_inline (-1, telesur_en_linea, FALSE, NULL);                  //Asignar los datos de la imagen a icon
         imagen = GTK_IMAGE(gtk_image_new_from_pixbuf(icon));                                    //Asignar a imagen icon
-        gtk_button_set_image (GTK_BUTTON(boton_canal_527000_57912), GTK_WIDGET(imagen));        //Añadir la imagen al boton del canal boton_canal_527000_57912
+        gtk_button_set_image (GTK_BUTTON(boton_programa_527000_57912), GTK_WIDGET(imagen));     //Añadir la imagen al boton del programa boton_programal_527000_57912
         //Frecuencia de 527000 Hz Fin
-        //Colocar imagenes para botones de canales fin
+        //Colocar imagenes para botones de programacion fin
 
         //------------------------------------CREACION DE LOS WIDGETS FIN---------------------------------------
 
         //------------------------------------EMPAQUETADO DE LOS WIDGETS COMIENZO-------------------------------
 
-        //Insertar en la caja_vertical_botones_canales_1 y en caja_vertical_botones_canales_2 los botones de los canales comienzo
+        //Insertar en la caja_vertical_botones_programacion  los botones de los programas comienzo
         //Frecuencia de 521000 Hz Comienzo
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_521000_57856, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_521000_57857, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_521000_57858, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_521000_57859, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_521000_57860, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_521000_57880, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_521000_57856, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_521000_57857, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_521000_57858, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_521000_57859, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_521000_57860, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_521000_57880, FALSE, FALSE, 0);
         //Frecuencia de 521000 Hz Fin
         //Frecuencia de 533000 Hz Comienzo
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_533000_57920, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_533000_57921, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_533000_57922, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_533000_57944, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_533000_57920, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_533000_57921, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_533000_57922, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_533000_57944, FALSE, FALSE, 0);
         //Frecuencia de 533000 Hz Fin
         //Frecuencia de 539000 Hz Comienzo
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_539000_57952, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_539000_57953, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_539000_57954, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_539000_57955, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_539000_57956, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_539000_57976, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_539000_57952, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_539000_57953, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_539000_57954, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_539000_57955, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_539000_57956, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_539000_57976, FALSE, FALSE, 0);
         //Frecuencia de 539000 Hz Fin
         //Frecuencia de 527000 Hz Comienzo
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_527000_57888, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_527000_57889, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_527000_57890, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_527000_57891, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_527000_57892, FALSE, FALSE, 0);
-        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_canales), boton_canal_527000_57912, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_527000_57888, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_527000_57889, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_527000_57890, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_527000_57891, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_527000_57892, FALSE, FALSE, 0);
+        gtk_box_pack_start(GTK_BOX(caja_vertical_botones_programacion), boton_programa_527000_57912, FALSE, FALSE, 0);
         //Frecuencia de 527000 Hz Fin
-        //Insertar en la caja_vertical_botones_canales_1 y en caja_vertical_botones_canales_2 los botones de los canales fin
 
-        gtk_container_add(GTK_CONTAINER(ventana_desplazamiento),GTK_WIDGET(caja_vertical_botones_canales));                     //Insertar en l ventana_desplazamiento la caja_vertical_botones_canales
+        gtk_container_add(GTK_CONTAINER(ventana_desplazamiento),GTK_WIDGET(caja_vertical_botones_programacion));                //Insertar en la ventana_desplazamiento la caja_vertical_botones_programacion
 
         gtk_box_pack_start(GTK_BOX(caja_horizontal_botones_de_control), boton_reproducir_pausar, FALSE, FALSE, 0);              //Insertar en la caja_horizontal_botones_de_control el boton_reproducir_pausar
         gtk_box_pack_start(GTK_BOX(caja_horizontal_botones_de_control), boton_detener, FALSE, FALSE, 0);                        //Insertar en la caja_horizontal_botones_de_control el boton_detener
@@ -278,10 +277,10 @@ int main(int argc, char *argv[])
         gtk_box_pack_start(GTK_BOX(caja_horizontal_indicadores), frame_senial, FALSE, FALSE, 0);                                //Insertar en la caja_horizontal_indicadores frame_senial
         gtk_box_pack_start(GTK_BOX(caja_horizontal_indicadores), boton_senial, FALSE, FALSE, 0);                                //Insertar en la caja_horizontal_indicadores boton_senial
 
-        gtk_grid_attach(GTK_GRID(rejilla),reproductor_widget,0,0,50,1);                                                         //Insertar en la rejilla el reproductor_widget
-        gtk_grid_attach(GTK_GRID(rejilla),ventana_desplazamiento,51,0,1,2);                                                     //Insertar en la rejilla la ventana_desplazamiento
+        gtk_grid_attach(GTK_GRID(rejilla),reproductor_widget,0,0,10,1);                                                         //Insertar en la rejilla el reproductor_widget
+        gtk_grid_attach(GTK_GRID(rejilla),ventana_desplazamiento,10,0,1,2);                                                     //Insertar en la rejilla la ventana_desplazamiento
         gtk_grid_attach(GTK_GRID(rejilla),caja_horizontal_botones_de_control,0,1,1,1);                                          //Insertar en la rejilla la vcaja_horizontal_botones_de_control
-        gtk_grid_attach(GTK_GRID(rejilla),caja_horizontal_indicadores,49,1,1,1);                                                //Insertar en la rejilla la vcaja_horizontal_indicadores
+        gtk_grid_attach(GTK_GRID(rejilla),caja_horizontal_indicadores,9,1,1,1);                                                //Insertar en la rejilla la vcaja_horizontal_indicadores
 
         gtk_box_pack_start(GTK_BOX(caja_vertical_mayor), rejilla,TRUE,TRUE,0);                                                  //Insertar rejilla en la caja_vertical_mayor
         gtk_container_add(GTK_CONTAINER(ventana),caja_vertical_mayor);                                                          //Añadir a la ventana la caja_vertical_mayor
@@ -290,71 +289,71 @@ int main(int argc, char *argv[])
         //------------------------------------SEÑALES Y PROCEDIMEINTOS DE LLAMADA COMIENZO----------------------
         g_signal_connect(ventana, "destroy", G_CALLBACK(procedimiento_de_llamada_destruir), NULL);                              //Procedimiento de llamada para destruir todos los widget cuando la ventana se cierre
 
-        //Señales y funciones de llamada para los botones de los canales Comienzo
+        //Señales y funciones de llamada para los botones de los programas Comienzo
         //Frecuencia de 521000 Hz Comienzo
-        g_signal_connect(boton_canal_521000_57856, "clicked", G_CALLBACK(procedimiento_canal_521000_57856), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_521000_57857, "clicked", G_CALLBACK(procedimiento_canal_521000_57857), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_521000_57858, "clicked", G_CALLBACK(procedimiento_canal_521000_57858), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_521000_57859, "clicked", G_CALLBACK(procedimiento_canal_521000_57859), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_521000_57860, "clicked", G_CALLBACK(procedimiento_canal_521000_57860), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_521000_57880, "clicked", G_CALLBACK(procedimiento_canal_521000_57880), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
+        g_signal_connect(boton_programa_521000_57856, "clicked", G_CALLBACK(procedimiento_programa_521000_57856), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_521000_57857, "clicked", G_CALLBACK(procedimiento_programa_521000_57857), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_521000_57858, "clicked", G_CALLBACK(procedimiento_programa_521000_57858), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_521000_57859, "clicked", G_CALLBACK(procedimiento_programa_521000_57859), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_521000_57860, "clicked", G_CALLBACK(procedimiento_programa_521000_57860), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_521000_57880, "clicked", G_CALLBACK(procedimiento_programa_521000_57880), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
         //Frecuencia de 521000 Hz Fin
         //Frecuencia de 533000 Hz Comienzo
-        g_signal_connect(boton_canal_533000_57920, "clicked", G_CALLBACK(procedimiento_canal_533000_57920), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_533000_57921, "clicked", G_CALLBACK(procedimiento_canal_533000_57921), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_533000_57922, "clicked", G_CALLBACK(procedimiento_canal_533000_57922), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_533000_57944, "clicked", G_CALLBACK(procedimiento_canal_533000_57944), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
+        g_signal_connect(boton_programa_533000_57920, "clicked", G_CALLBACK(procedimiento_programa_533000_57920), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_533000_57921, "clicked", G_CALLBACK(procedimiento_programa_533000_57921), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_533000_57922, "clicked", G_CALLBACK(procedimiento_programa_533000_57922), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_533000_57944, "clicked", G_CALLBACK(procedimiento_programa_533000_57944), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
         //Frecuencia de 533000 Hz Fin
         //Frecuencia de 539000 Hz Comienzo
-        g_signal_connect(boton_canal_539000_57952, "clicked", G_CALLBACK(procedimiento_canal_539000_57952), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_539000_57953, "clicked", G_CALLBACK(procedimiento_canal_539000_57953), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_539000_57954, "clicked", G_CALLBACK(procedimiento_canal_539000_57954), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_539000_57955, "clicked", G_CALLBACK(procedimiento_canal_539000_57955), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_539000_57956, "clicked", G_CALLBACK(procedimiento_canal_539000_57956), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_539000_57976, "clicked", G_CALLBACK(procedimiento_canal_539000_57976), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
+        g_signal_connect(boton_programa_539000_57952, "clicked", G_CALLBACK(procedimiento_programa_539000_57952), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_539000_57953, "clicked", G_CALLBACK(procedimiento_programa_539000_57953), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_539000_57954, "clicked", G_CALLBACK(procedimiento_programa_539000_57954), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_539000_57955, "clicked", G_CALLBACK(procedimiento_programa_539000_57955), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_539000_57956, "clicked", G_CALLBACK(procedimiento_programa_539000_57956), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_539000_57976, "clicked", G_CALLBACK(procedimiento_programa_539000_57976), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
         //Frecuencia de 539000 Hz Fin
         //Frecuencia de 527000 Hz Comienzo
-        g_signal_connect(boton_canal_527000_57888, "clicked", G_CALLBACK(procedimiento_canal_527000_57888), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_527000_57889, "clicked", G_CALLBACK(procedimiento_canal_527000_57889), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_527000_57890, "clicked", G_CALLBACK(procedimiento_canal_527000_57890), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_527000_57891, "clicked", G_CALLBACK(procedimiento_canal_527000_57891), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_527000_57892, "clicked", G_CALLBACK(procedimiento_canal_527000_57892), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
-        g_signal_connect(boton_canal_527000_57912, "clicked", G_CALLBACK(procedimiento_canal_527000_57912), NULL);              //Procedimiento de llamada cuando el boton del canal se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del canal
+        g_signal_connect(boton_programa_527000_57888, "clicked", G_CALLBACK(procedimiento_programa_527000_57888), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_527000_57889, "clicked", G_CALLBACK(procedimiento_programa_527000_57889), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_527000_57890, "clicked", G_CALLBACK(procedimiento_programa_527000_57890), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_527000_57891, "clicked", G_CALLBACK(procedimiento_programa_527000_57891), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_527000_57892, "clicked", G_CALLBACK(procedimiento_programa_527000_57892), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
+        g_signal_connect(boton_programa_527000_57912, "clicked", G_CALLBACK(procedimiento_programa_527000_57912), NULL);              //Procedimiento de llamada cuando el boton del programa se presione para inicializar el sintonizador, demodulador, colocar la frecuencia y el id del programa
         //Frecuencia de 527000 Hz Fin
         //Señales y funciones de llamada para los botones de los canales Fin
 
         //Señales y funciones de llamada para los botones de los canales Comienzo
         //Frecuencia de 521000 Hz Comienzo
-        g_signal_connect(boton_canal_521000_57856, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_521000_57857, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_521000_57858, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_521000_57859, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_521000_57860, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_521000_57880, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
+        g_signal_connect(boton_programa_521000_57856, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_521000_57857, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_521000_57858, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_521000_57859, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_521000_57860, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_521000_57880, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
         //Frecuencia de 521000 Hz Fin
         //Frecuencia de 533000 Hz Comienzo
-        g_signal_connect(boton_canal_533000_57920, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_533000_57921, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_533000_57922, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_533000_57944, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
+        g_signal_connect(boton_programa_533000_57920, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_533000_57921, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_533000_57922, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_533000_57944, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
         //Frecuencia de 533000 Hz Fin
         //Frecuencia de 539000 Hz Comienzo
-        g_signal_connect(boton_canal_539000_57952, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_539000_57953, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_539000_57954, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_539000_57955, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_539000_57956, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_539000_57976, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
+        g_signal_connect(boton_programa_539000_57952, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_539000_57953, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_539000_57954, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_539000_57955, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_539000_57956, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_539000_57976, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
         //Frecuencia de 539000 Hz Fin
         //Frecuencia de 527000 Hz Comienzo
-        g_signal_connect(boton_canal_527000_57888, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_527000_57889, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_527000_57890, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_527000_57891, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_527000_57892, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
-        g_signal_connect(boton_canal_527000_57912, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del canal se presione
+        g_signal_connect(boton_programa_527000_57888, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_527000_57889, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_527000_57890, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_527000_57891, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_527000_57892, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
+        g_signal_connect(boton_programa_527000_57912, "clicked", G_CALLBACK(procedimiento_de_llamada_hilo_recepcion), NULL);         //Procedimiento_de_llamada_hilo_recepcion cuando el boton del programa se presione
         //Frecuencia de 527000 Hz Fin
-        //Señales y funciones de llamada para los botones de los canales Fin
+        //Señales y funciones de llamada para los botones de los programas Fin
 
         g_signal_connect(boton_reproducir_pausar, "clicked", G_CALLBACK(procedimiento_de_llamada_reproducir_pausar), NULL);       //Procedimiento_de_llamada_reproducir_pausar cuando el boton boton_reproducir_pausar se presione
         g_signal_connect(boton_detener, "clicked", G_CALLBACK(procedimiento_de_llamada_detener), NULL);                           //Procedimiento_de_llamada_reproducir_pausar cuando el boton boton_reproducir_pausar se presione

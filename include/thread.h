@@ -1,3 +1,20 @@
+ /* TDA_LINUX is a USB control rutine and multimedia rutine to the Dongle
+    USB of Digital Televesion developed by the CENDIT Fundation.
+    Copyright (C) 2017  Edgar Gomez
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
 #ifndef THREAD_H_INCLUDED
 #define THREAD_H_INCLUDED
 
@@ -21,13 +38,13 @@ int funcion_leer_calidad_senial(void);
 //!Constante entera tamaño del buffer = 245760.
 const int tamanio_buffer_MPEG_TS = 245760;                                                              //Tamaño del buffer de recepción usb de recepccion de BTS 245760 bytes
 
-//!Buffer para alojar los paquetes BTS.
+//!Buffer para alojar los paquetes BTS, 240kb.
 static unsigned char MPEG2_TS[tamanio_buffer_MPEG_TS];                                                  //Creación del buffer de recepcion
 
 //!Constante entera tamaño del buffer = 4915200.
 const int tamanio_buffer = 4915200;                                                                     //Tamaño del buffer del buffer rotativo para alojar paquetes BTS 4915200 bytes
 
-//!Buffer rotativo para alojar los paquetes BTS.
+//!Buffer rotativo para alojar los paquetes BTS a ser usados por VLC, 4,1 Mb.
 static unsigned char buffer[tamanio_buffer];                                                            //Buffer rotativo
 
 
@@ -68,25 +85,27 @@ static void procedimiento_de_llamada_leer_transferencia_usb(struct libusb_transf
         if(mensasje_recepcion)                                                  //si mensaje de recepción es verdadero
             std::cout<<"Recibiendo paquetes BTS"<<std::endl;                    //Mostar la siguiente advertencia
         mensasje_recepcion=false;                                               //mensaje_rececpcion igual false
+
+
+        if(contador_evitar_basura <= 5)                                               //Si contador de basura es menor o igual a cuatro
+        contador_evitar_basura++;                                               //Incrementar contador_evitar_basura
+
+        if (contador_evitar_basura > 5)                                             //Si contador_evitar_basura mayor a 6 enonces
+        {
+            std::memcpy((buffer+posicion),transferencia_usb_2->buffer,tamanio_buffer_MPEG_TS);  //Copiar el los datos del buffer MPEG2_TS alojados en la estructura LIBUSB al buffer rotativo
+            posicion+=tamanio_buffer_MPEG_TS;                                                   //Incrementar la posicion despues de copiar los datos
+            if(posicion>4669440)                                                                //Si se copió la ultima posición
+                posicion=0;                                                                     //Comienza en la posición cero
+        }
+
+        int respuesta_transferencia_llamada = libusb_submit_transfer(transferencia_usb_2);  //Realizar una nueva transferencia, devulve cero si fue exitosa
+
+        if(respuesta_transferencia_llamada != 0)                                            //Si respuesta_transferencia_llamada es diferente de cero
+            std::cout<<"Error nueva transferencia: "<<respuesta_transferencia_llamada<<std::endl; //Mostar la siguiente advertencia
+
     }
     else                                                                        //Sino
         std::cout<<"Error: "<<transferencia_usb_2->status<<std::endl;           //Mostar la siguiente advertencia, con el numero del status de transferencia LIBUSB
-
-    if(contador_evitar_basura <= 4)                                               //Si contador de basura es menor o igual a cuatro
-        contador_evitar_basura++;                                               //Incrementar contador_evitar_basura
-
-    if (contador_evitar_basura > 4)                                             //Si contador_evitar_basura mayor a 6 enonces
-    {
-        std::memcpy((buffer+posicion),transferencia_usb_2->buffer,tamanio_buffer_MPEG_TS);  //Copiar el los datos del buffer MPEG2_TS alojados en la estructura LIBUSB al buffer rotativo
-        posicion+=tamanio_buffer_MPEG_TS;                                                   //Incrementar la posicion despues de copiar los datos
-        if(posicion>4669440)                                                                //Si se copió la ultima posición
-            posicion=0;                                                                     //Comienza en la posición cero
-    }
-
-    int respuesta_transferencia_llamada = libusb_submit_transfer(transferencia_usb_2);  //Realizar una nueva transferencia, devulve cero si fue exitosa
-
-    if(respuesta_transferencia_llamada != 0)                                            //Si respuesta_transferencia_llamada es diferente de cero
-        std::cout<<"Error nueva transferencia: "<<respuesta_transferencia_llamada<<std::endl; //Mostar la siguiente advertencia
 
 }
 
@@ -140,8 +159,9 @@ int procedimiento_ciclo_recepcion_BTS(void)
             libusb_submit_transfer(transferencia_usb);                                                          //Realizar la transferencia
         }
 
+        bool estado=true;
         /*Manejar eventos LIBUSB*/
-        while(1)                                                                                                //Ciclo infinito para el hilo
+        while(estado)                                                                                                //Ciclo infinito para el hilo
         {
             int respuesta_eventos = libusb_handle_events(contexto_usb);                                         //Para manejar los eventos de LIBUSB mientras se hacen las transferencias
 
@@ -149,11 +169,11 @@ int procedimiento_ciclo_recepcion_BTS(void)
 
             if (funcion_leer_estado_hotplug() > 1)                                                              //Si el estado dehotplug es mayor a uno
             {
-                libusb_cancel_transfer(transferencia_usb);                                                      //Cancelar transferencias usb
+                libusb_free_transfer(transferencia_usb);                                                      //Cancelar transferencias usb
                 procedimiento_escribir_estado_detener(true);                                                    //Escribir la variable estado_detener=verdadero, esto inicia el stop del video
                 posicion=0;
                 std::cout<<"El dispsotivo fue desconectado"<<std::endl;                                         //Mostrar la siguiente advertencia
-                break;                                                                                          //Romper
+                estado=false;                                                                                          //Romper
             }
 
             procedimiento_retardo_milisegundos(2);                                                              //Porcedimeinto de retardo prar evitar uso excesivo del CPU
