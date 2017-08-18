@@ -1,0 +1,21 @@
+#!/bin/bash
+# Genrador de headers
+
+gdk-pixbuf-csource --raw --name=123tv_en_linea 123tv.png > 123tv_imagen.h
+gdk-pixbuf-csource --raw --name=alba_en_linea alba.png > alba_imagen.h
+gdk-pixbuf-csource --raw --name=antv_en_linea antv.png > antv_imagen.h
+gdk-pixbuf-csource --raw --name=avilatv_en_linea avilatv.png > avilatv_imagen.h
+gdk-pixbuf-csource --raw --name=cctv_en_linea cctv.png > cctv_imagen.h
+gdk-pixbuf-csource --raw --name=colombeia_en_linea colombeia.png > colombeia_imagen.h
+gdk-pixbuf-csource --raw --name=conciencia_en_linea conciencia.png > conciencia_imagen.h
+gdk-pixbuf-csource --raw --name=fanbtv_en_linea fanbtv.png > fanbtv_imagen.h
+gdk-pixbuf-csource --raw --name=meridiano_en_linea meridiano.png > meridiano_imagen.h
+gdk-pixbuf-csource --raw --name=pdvsatv_en_linea pdvsatv.png > pdvsatv_imagen.h
+gdk-pixbuf-csource --raw --name=russiatoday_en_linea russiatoday.png > russiatoday_imagen.h
+gdk-pixbuf-csource --raw --name=sibci_en_linea sibci.png > sibci_imagen.h
+gdk-pixbuf-csource --raw --name=telesur_en_linea telesur.png > telesur_imagen.h
+gdk-pixbuf-csource --raw --name=televen_en_linea televen.png > televen_imagen.h
+gdk-pixbuf-csource --raw --name=tves_en_linea tves.png > tves_imagen.h
+gdk-pixbuf-csource --raw --name=venevision_en_linea venevision.png > venevision_imagen.h
+gdk-pixbuf-csource --raw --name=vive_en_linea vive.png > vive_imagen.h
+gdk-pixbuf-csource --raw --name=vtv_en_linea vtv.png > vtv_imagen.h
